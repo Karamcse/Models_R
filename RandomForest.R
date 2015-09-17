@@ -6,6 +6,7 @@ library(randomForest)
 ## function for random forest classification
 RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,nodesize=5,seed=123,metric="auc",plot=0,importance=0)
 {
+  # defining evaluation metric
   score <- function(a,b,metric)
   {
     switch(metric,
@@ -27,6 +28,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
     X_build <- subset(X_train, randomCV != i, select = -c(order, randomCV))
     X_val <- subset(X_train, randomCV == i) 
     
+    # building model
     model_rf <- randomForest(result ~., data = X_build, ntree = ntree, nodesize = nodesize)
     
     if (plot == 1)
@@ -39,9 +41,11 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
       print(model_rf$importance)
     }
     
+    # predicting on validation data
     pred_rf <- predict(model_rf, X_val, type = "prob")[,2]
     X_val <- cbind(X_val, pred_rf)
     
+    # predicting on test data
     if (nrow(X_test) > 0)
     {
       pred_rf <- predict(model_rf, X_test, type = "prob")[,2]
@@ -49,6 +53,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
       
     cat("CV Fold-", i, " ", metric, ": ", score(X_val$result, X_val$pred_rf, metric), "\n", sep = "")
     
+    # initializing outputs
     if (i == 1)
     {
       output <- X_val
@@ -58,6 +63,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
       }      
     }
     
+    # appending to outputs
     if (i > 1)
     {
       output <- rbind(output, X_val)
@@ -70,10 +76,13 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
     gc()
   } 
 
+  # final evaluation score
   output <- output[order(output$order),]
   cat("\nRandomForest ", cv, "-Fold CV ", metric, ": ", score(output$result, output$pred_rf, metric), "\n", sep = "")
 
   output <- subset(output, select = c("order", "pred_rf"))
+  
+  # returning CV predictions and test data with predictions
   return(list(output, X_test))  
 }
 
@@ -81,6 +90,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
 ## function for random forest regression
 RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,nodesize=5,seed=123,metric="mae",plot=0,importance=0)
 {
+  # defining evaluation metric
   score <- function(a,b,metric)
   {
     switch(metric,
@@ -101,6 +111,7 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
     X_build <- subset(X_train, randomCV != i, select = -c(order, randomCV))
     X_val <- subset(X_train, randomCV == i) 
     
+    # building model
     model_rf <- randomForest(result ~., data = X_build, ntree = ntree, nodesize = nodesize)
     
     if (plot == 1)
@@ -113,9 +124,11 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
       print(model_rf$importance)
     }
     
+    # predicting on validation data
     pred_rf <- predict(model_rf, X_val)
     X_val <- cbind(X_val, pred_rf)
     
+    # predicting on test data
     if (nrow(X_test) > 0)
     {
       pred_rf <- predict(model_rf, X_test)
@@ -123,6 +136,7 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
       
     cat("CV Fold-", i, " ", metric, ": ", score(X_val$result, X_val$pred_rf, metric), "\n", sep = "")
     
+    # initializing outputs
     if (i == 1)
     {
       output <- X_val
@@ -132,6 +146,7 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
       }      
     }
     
+    # appending to outputs
     if (i > 1)
     {
       output <- rbind(output, X_val)
@@ -144,10 +159,13 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
     gc()
   } 
 
+  # final evaluation score
   output <- output[order(output$order),]
   cat("\nRandomForest ", cv, "-Fold CV ", metric, ": ", score(output$result, output$pred_rf, metric), "\n", sep = "")
 
   output <- subset(output, select = c("order", "pred_rf"))
+  
+  # returning CV predictions and test data with predictions
   return(list(output, X_test))  
 }
 
