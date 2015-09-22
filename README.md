@@ -2,7 +2,8 @@
 Cross-Validation functions for various models
 
 ### R scripts
-Random Forest
+1. Random Forest
+2. XGBoost
 
 ### Python scripts
 Coming soon... :-)
