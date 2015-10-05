@@ -13,6 +13,7 @@ XGBoost_CV <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logi
            auc = auc(a,b),
            mae = sum(abs(a-b))/length(a),
            rmse = sqrt(sum((a-b)^2)/length(a)),
+           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)),
            logloss = -(sum(log(1-b[a==0])) + sum(log(b[a==1])))/length(a),
            precision = length(a[a==b])/length(a))
   }
