@@ -95,7 +95,8 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
   {
     switch(metric,
            mae = sum(abs(a-b))/length(a),
-           rmse = sqrt(sum((a-b)^2)/length(a)))
+           rmse = sqrt(sum((a-b)^2)/length(a)),
+           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)))
   }
   
   cat("Preparing Data\n")
