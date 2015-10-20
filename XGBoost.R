@@ -4,7 +4,7 @@ library(xgboost)
 
 
 ## function for xgboost
-XGBoost_CV <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,seed=123,metric="auc")
+XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,seed=123,metric="auc")
 {
   # defining evaluation metric
   score <- function(a,b,metric)
