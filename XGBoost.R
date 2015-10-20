@@ -28,9 +28,12 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
     X_train[,i] <- as.numeric(X_train[,i])
   }
   
-  for (i in 1:ncol(X_test))
+  if (nrow(X_test)>0)
   {
-    X_test[,i] <- as.numeric(X_test[,i])
+    for (i in 1:ncol(X_test))
+    {
+      X_test[,i] <- as.numeric(X_test[,i])
+    }    
   }
   
   X_train[is.na(X_train)] <- -1
