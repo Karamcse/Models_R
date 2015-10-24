@@ -44,6 +44,7 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
   set.seed(seed)
   X_train$randomCV <- floor(runif(nrow(X_train), 1, (cv+1)))
   
+  # cross-validation
   cat(cv, "-fold Cross Validation\n", sep = "")
   for (i in 1:cv)
   {
