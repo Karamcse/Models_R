@@ -29,7 +29,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
     X_val <- subset(X_train, randomCV == i) 
     
     # building model
-    model_rf <- randomForest(result ~., data = X_build, ntree = ntree, nodesize = nodesize)
+    model_rf <- randomForest(result ~., data=X_build, ntree=ntree, nodesize=nodesize)
     
     if (plot == 1)
     {
@@ -113,7 +113,7 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
     X_val <- subset(X_train, randomCV == i) 
     
     # building model
-    model_rf <- randomForest(result ~., data = X_build, ntree = ntree, nodesize = nodesize)
+    model_rf <- randomForest(result ~., data=X_build, ntree=ntree, nodesize=nodesize)
     
     if (plot == 1)
     {
