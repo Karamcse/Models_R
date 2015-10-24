@@ -22,6 +22,7 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
   set.seed(seed)
   X_train$randomCV <- floor(runif(nrow(X_train), 1, (cv+1)))
   
+  # cross-validation
   cat(cv, "-fold Cross Validation\n", sep = "")
   for (i in 1:cv)
   {
@@ -106,6 +107,7 @@ RandomForestRegression <- function(X_train,y,X_test=data.frame(),cv=5,ntree=50,n
   set.seed(seed)
   X_train$randomCV <- floor(runif(nrow(X_train), 1, (cv+1)))
   
+  # cross-validation
   cat(cv, "-fold Cross Validation\n", sep = "")
   for (i in 1:cv)
   {
