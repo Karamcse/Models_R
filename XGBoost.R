@@ -1,5 +1,4 @@
 ## loading libraries
-library(pROC)
 library(xgboost)
 
 
@@ -10,12 +9,18 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
   score <- function(a,b,metric)
   {
     switch(metric,
+           accuracy = sum(abs(a-b)<=0.5)/length(a),
            auc = auc(a,b),
-           mae = sum(abs(a-b))/length(a),
-           rmse = sqrt(sum((a-b)^2)/length(a)),
-           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)),
            logloss = -(sum(log(1-b[a==0])) + sum(log(b[a==1])))/length(a),
-           precision = length(a[a==b])/length(a))
+           mae = sum(abs(a-b))/length(a),
+           precision = length(a[a==b])/length(a),
+           rmse = sqrt(sum((a-b)^2)/length(a)),
+           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)))           
+  }
+  
+  if (metric == "auc")
+  {
+    library(pROC)
   }
   
   cat("Preparing Data\n")
