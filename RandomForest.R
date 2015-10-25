@@ -19,6 +19,9 @@ RandomForestClassification <- function(X_train,y,X_test=data.frame(),cv=5,ntree=
   X_train$order <- seq(1, nrow(X_train))
   X_train$result <- as.factor(y)
   
+  X_train[is.na(X_train)] <- -1
+  X_test[is.na(X_test)] <- -1
+  
   set.seed(seed)
   X_train$randomCV <- floor(runif(nrow(X_train), 1, (cv+1)))
   
