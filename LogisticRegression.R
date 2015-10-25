@@ -1,6 +1,5 @@
 # loading library
 library(car)
-library(pROC)
 
 
 LogisticRegression <- function(X_train,y,X_test=data.frame(),cv=5,seed=123,metric="auc",importance=0)
@@ -9,14 +8,20 @@ LogisticRegression <- function(X_train,y,X_test=data.frame(),cv=5,seed=123,metri
   score <- function(a,b,metric)
   {
     switch(metric,
+           accuracy = sum(abs(a-b)<=0.5)/length(a),
            auc = auc(a,b),
-           mae = sum(abs(a-b))/length(a),
-           rmse = sqrt(sum((a-b)^2)/length(a)),
-           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)),
            logloss = -(sum(log(1-b[a==0])) + sum(log(b[a==1])))/length(a),
-           precision = length(a[a==b])/length(a))
+           mae = sum(abs(a-b))/length(a),
+           precision = length(a[a==b])/length(a),
+           rmse = sqrt(sum((a-b)^2)/length(a)),
+           rmspe = sqrt(sum(((a-b)/a)^2)/length(a)))           
   }
-    
+  
+  if (metric == "auc")
+  {
+    library(pROC)
+  }
+  
   cat("Preparing Data\n")
   X_train$order <- seq(1, nrow(X_train))
   X_train$result <- as.numeric(y)
