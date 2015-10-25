@@ -2,11 +2,13 @@
 Cross-Validation functions for various models
 
 ### R scripts
-1. Logistic Regression
-2. Naive Bayes
-3. Random Forest
-4. SVM
-5. XGBoost
+1. GLMNET
+2. Logistic Regression
+3. Naive Bayes
+4. Nearest Neighbour
+5. Random Forest
+6. SVM
+7. XGBoost
 
 ### Python scripts
 Coming soon... :-)
