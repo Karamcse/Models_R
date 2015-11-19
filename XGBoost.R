@@ -3,7 +3,7 @@ library(xgboost)
 
 
 ## function for xgboost
-XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,seed=123,metric="auc",importance=0)
+XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,seed=123,metric="auc",importance=0)
 {
   # defining evaluation metric
   score <- function(a,b,metric)
@@ -26,6 +26,11 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
   cat("Preparing Data\n")
   X_train$order <- seq(1, nrow(X_train))
   X_train$result <- as.numeric(y)
+  
+  if (transform == "log")
+  {
+    X_train$result <- log(X_train$result)
+  }
   
   # converting data to numeric
   for (i in 1:ncol(X_train))
@@ -75,12 +80,21 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
     
     # predicting on validation data
     pred_xgb <- predict(model_xgb, val)
+    if (transform == "log")
+    {
+      pred_xgb <- exp(pred_xgb)
+    }
+    
     X_val <- cbind(X_val, pred_xgb)
     
     # predicting on test data
     if (nrow(X_test) > 0)
     {
       pred_xgb <- predict(model_xgb, test)
+      if (transform == "log")
+      {
+        pred_xgb <- exp(pred_xgb)
+      }
     }
     
     cat("CV Fold-", i, " ", metric, ": ", score(X_val$result, X_val$pred_xgb, metric), "\n", sep = "")
