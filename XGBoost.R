@@ -3,7 +3,7 @@ library(xgboost)
 
 
 ## function for xgboost
-XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,seed=123,metric="auc")
+XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,seed=123,metric="auc",importance=0)
 {
   # defining evaluation metric
   score <- function(a,b,metric)
@@ -56,6 +56,8 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
     X_build <- subset(X_train, randomCV != i)
     X_val <- subset(X_train, randomCV == i)
     
+    feature_names <- colnames(subset(X_build, select = -c(order, randomCV, result)))
+    
     build <- as.matrix(subset(X_build, select = -c(order, randomCV, result)))
     val <- as.matrix(subset(X_val, select = -c(order, randomCV, result)))
     test <- as.matrix(X_test2)
@@ -64,6 +66,12 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,objective="binary:logisti
     
     # building model
     model_xgb <- xgboost(build,build_label,objective=objective,eta=eta,max.depth=max.depth,nrounds=nrounds,gamma=gamma,min_child_weight=min_child_weight,subsample=subsample,nthread=-1,verbose=0,eval.metric="auc")
+    
+    # variable importance
+    if (importance == 1)
+    {
+      print (xgb.importance(feature_names=feature_names, model=model_xgb))
+    }
     
     # predicting on validation data
     pred_xgb <- predict(model_xgb, val)
