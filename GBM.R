@@ -3,7 +3,7 @@ library(pROC)
 library(gbm)
 
 
-GBMRegression <- function(X_train,y,X_test=data.frame(),cv=5,n.trees=50,n.minobsinnode=5,interaction.depth=2,shrinkage=0.001,seed=123,metric="rmse")
+GBMRegression <- function(X_train,y,X_test=data.frame(),cv=5,distribution="gaussian",n.trees=50,n.minobsinnode=5,interaction.depth=2,shrinkage=0.001,seed=123,metric="rmse")
 {
   # defining evaluation metric
   score <- function(a,b,metric)
@@ -29,7 +29,7 @@ GBMRegression <- function(X_train,y,X_test=data.frame(),cv=5,n.trees=50,n.minobs
     X_val <- subset(X_train, randomCV == i) 
     
     # building model
-    model_gbm <- gbm(result ~.,data=X_build,n.trees=n.trees,n.minobsinnode=n.minobsinnode,interaction.depth=interaction.depth,shrinkage=shrinkage)
+    model_gbm <- gbm(result ~.,data=X_build,distribution=distribution,n.trees=n.trees,n.minobsinnode=n.minobsinnode,interaction.depth=interaction.depth,shrinkage=shrinkage)
     
     # predicting on validation data
     pred_gbm <- predict(model_gbm, X_val, n.trees)
@@ -38,7 +38,7 @@ GBMRegression <- function(X_train,y,X_test=data.frame(),cv=5,n.trees=50,n.minobs
     # predicting on test data
     if (nrow(X_test) > 0)
     {
-      pred_gbm <- predict(model_gbm, X_test)
+      pred_gbm <- predict(model_gbm, X_test, n.trees)
     }
     
     cat("CV Fold-", i, " ", metric, ": ", score(X_val$result, X_val$pred_gbm, metric), "\n", sep = "")
