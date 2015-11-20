@@ -29,7 +29,7 @@ GBMRegression <- function(X_train,y,X_test=data.frame(),cv=5,n.trees=50,n.minobs
     X_val <- subset(X_train, randomCV == i) 
     
     # building model
-    model_gbm <- randomForest(result ~.,data=X_build,n.trees=n.trees,n.minobsinnode=n.minobsinnode,interaction.depth=interaction.depth,shrinkage=shrinkage)
+    model_gbm <- gbm(result ~.,data=X_build,n.trees=n.trees,n.minobsinnode=n.minobsinnode,interaction.depth=interaction.depth,shrinkage=shrinkage)
     
     # predicting on validation data
     pred_gbm <- predict(model_gbm, X_val, n.trees)
