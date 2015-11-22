@@ -3,7 +3,7 @@ library(xgboost)
 
 
 ## function for xgboost
-XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,seed=123,metric="auc",importance=0)
+XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",objective="binary:logistic",eta=0.1,max.depth=5,nrounds=50,gamma=0,min_child_weight=1,subsample=1,colsample_bytree=1,seed=123,metric="auc",importance=0)
 {
   # defining evaluation metric
   score <- function(a,b,metric)
@@ -70,7 +70,7 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",objectiv
     build_label <- as.matrix(subset(X_build, select = c('result')))
     
     # building model
-    model_xgb <- xgboost(build,build_label,objective=objective,eta=eta,max.depth=max.depth,nrounds=nrounds,gamma=gamma,min_child_weight=min_child_weight,subsample=subsample,nthread=-1,verbose=0,eval.metric="auc")
+    model_xgb <- xgboost(build,build_label,objective=objective,eta=eta,max.depth=max.depth,nrounds=nrounds,gamma=gamma,min_child_weight=min_child_weight,subsample=subsample,colsample_bytree=colsample_bytree,nthread=-1,verbose=0,eval.metric="auc")
     
     # variable importance
     if (importance == 1)
