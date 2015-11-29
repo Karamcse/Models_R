@@ -129,5 +129,5 @@ XGBoost <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",objectiv
   output <- subset(output, select = c("order", "pred_xgb"))
   
   # returning CV predictions and test data with predictions
-  return(list(output, X_test))  
+  return(list("train"=output, "test"=X_test))  
 }
