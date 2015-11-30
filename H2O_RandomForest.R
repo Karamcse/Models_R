@@ -4,7 +4,7 @@ localh2o <- h2o.init(nthreads=-1)
 
 
 ## function for random forest
-RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntrees=100,max_depth=5,seed=235,metric="rmse",importance=0)
+RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntrees=100,max_depth=5,sample_rate=1,min_rows=1,seed=235,metric="rmse",importance=0)
 {
   # defining evaluation metric
   score <- function(a,b,metric)
@@ -52,7 +52,7 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
     X_val_h2o <- as.h2o(X_val, destination_frame="X_val_h2o")
     
     # building model
-    model_rf <- h2o.randomForest(x=names(X_build)[-ncol(X_build)], y="target", training_frame=X_build_h2o, ntrees=ntrees, max_depth=max_depth)
+    model_rf <- h2o.randomForest(x=names(X_build)[-ncol(X_build)], y="target", training_frame=X_build_h2o, ntrees=ntrees, max_depth=max_depth, sample_rate=sample_rate, min_rows=min_rows, seed=seed)
     
     if (importance == 1)
     {
@@ -103,9 +103,6 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
   output <- subset(output, select = c("order", "pred_rf"))
   
   # returning CV predictions and test data with predictions
-  return(list(output, X_test))  
+  return(list("train"=output, "test"=X_test))  
 }
 
-
-## shutting down h2o
-h2o.shutdown(prompt=F)
