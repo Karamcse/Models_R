@@ -4,7 +4,7 @@ localh2o <- h2o.init(nthreads=-1)
 
 
 ## function for random forest
-RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntrees=100,max_depth=5,sample_rate=1,min_rows=1,seed=235,metric="rmse",importance=0)
+RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntrees=100,max_depth=5,sample_rate=0.6,min_rows=1,seed=235,metric="rmse",importance=0)
 {
   # defining evaluation metric
   score <- function(a,b,metric)
