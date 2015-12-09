@@ -61,6 +61,7 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
     
     # predicting on validation data
     pred_rf <- as.data.frame(predict(model_rf, X_val_h2o))
+    names(pred_rf)[1] <- "pred_rf"
     if (ncol(pred_rf) == 3)
     {
       pred_rf <- pred_rf[,3]
@@ -72,7 +73,11 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
     if (nrow(X_test) > 0)
     {
       pred_rf <- as.data.frame(predict(model_rf, X_test_h2o))
-      names(pred_rf) <- "pred_rf"
+      names(pred_rf)[1] <- "pred_rf"
+      if (ncol(pred_rf) == 3)
+      {
+        pred_rf <- pred_rf[,3]
+      }
     }
     
     cat("CV Fold-", i, " ", metric, ": ", score(X_val$target, X_val$pred_rf, metric), "\n", sep = "")
@@ -103,8 +108,6 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
   # final evaluation score
   output <- output[order(output$order),]
   cat("\nRandomForest ", cv, "-Fold CV ", metric, ": ", score(output$result, output$pred_rf, metric), "\n", sep = "")
-  
-  output <- subset(output, select = c("order", "pred_rf"))
   
   # returning CV predictions and test data with predictions
   return(list("train"=output, "test"=X_test))  
