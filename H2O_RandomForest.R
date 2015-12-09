@@ -61,7 +61,11 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
     
     # predicting on validation data
     pred_rf <- as.data.frame(predict(model_rf, X_val_h2o))
-    names(pred_rf) <- "pred_rf"
+    if (ncol(pred_rf) == 3)
+    {
+      pred_rf <- pred_rf[,3]
+    }
+    
     X_val <- cbind(X_val, pred_rf)
     
     # predicting on test data
