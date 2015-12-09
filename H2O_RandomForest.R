@@ -107,7 +107,7 @@ RandomForest <- function(X_train,y,X_test=data.frame(),cv=5,transform="none",ntr
   
   # final evaluation score
   output <- output[order(output$order),]
-  cat("\nRandomForest ", cv, "-Fold CV ", metric, ": ", score(output$result, output$pred_rf, metric), "\n", sep = "")
+  cat("\nRandomForest ", cv, "-Fold CV ", metric, ": ", score(output$target, output$pred_rf, metric), "\n", sep = "")
   
   # returning CV predictions and test data with predictions
   return(list("train"=output, "test"=X_test))  
