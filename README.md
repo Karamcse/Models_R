@@ -6,11 +6,10 @@ Note: These are equivalent to some of the latest/better methods of performing CV
 1. GBM
 2. GLM
 3. Logistic Regression
-4. Naive Bayes
-5. Nearest Neighbour
-6. Random Forest
-7. SVM
-8. XGBoost
-
-### Python scripts
-Coming soon... :-)
+4. H2O Random Forest
+5. Naive Bayes
+6. Nearest Neighbour
+7. Random Forest
+8. Regularized Random Forest
+9. SVM
+10. XGBoost
