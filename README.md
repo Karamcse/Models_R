@@ -6,10 +6,12 @@ Note: These are equivalent to some of the latest/better methods of performing CV
 1. GBM
 2. GLM
 3. Logistic Regression
-4. H2O Random Forest
-5. Naive Bayes
-6. Nearest Neighbour
-7. Random Forest
-8. Regularized Random Forest
-9. SVM
-10. XGBoost
+4. H2O Deep Learning
+5. H2O GBM
+6. H2O Random Forest
+7. Naive Bayes
+8. Nearest Neighbour
+9. Random Forest
+10. Regularized Random Forest
+11. SVM
+12. XGBoost
