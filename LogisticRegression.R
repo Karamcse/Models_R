@@ -1,7 +1,4 @@
-# loading library
-library(car)
-
-
+# function for logistic regression
 LogisticRegression <- function(X_train,y,X_test=data.frame(),cv=5,seed=123,metric="auc",importance=0)
 {
   # defining evaluation metric
@@ -38,11 +35,6 @@ LogisticRegression <- function(X_train,y,X_test=data.frame(),cv=5,seed=123,metri
     
     # building model
     model_lr <- glm(result ~., data=X_build, family=binomial())
-    
-    if (importance == 1)
-    {
-      print(vif(model_lr))
-    }
     
     # predicting on validation data
     pred_lr <- predict(model_lr, X_val, type="response")
@@ -83,8 +75,6 @@ LogisticRegression <- function(X_train,y,X_test=data.frame(),cv=5,seed=123,metri
   output <- output[order(output$order),]
   cat("\nLogisticRegression ", cv, "-Fold CV ", metric, ": ", score(output$result, output$pred_lr, metric), "\n", sep = "")
   
-  output <- subset(output, select = c("order", "pred_lr"))
-  
   # returning CV predictions and test data with predictions
-  return(list(output, X_test))  
+  return(list("train"=output, "test"=X_test))  
 }
